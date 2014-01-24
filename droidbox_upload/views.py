@@ -6,10 +6,10 @@ import datetime
 import hashlib
 from upfile_form import UpFileForm
 from django.utils.datastructures import MultiValueDictKeyError
+from models import droidModel
 # from django.http import HttpResponseRedirect
 # from django.template import Template,Context
 # from django.template.loader import get_template
-
 
 
 def upload_form(request):
@@ -26,7 +26,15 @@ def upload(request):
                     f = handle_upload_file(request.FILES['apk'])
                     md5 = get_file_md5(request.FILES['apk'].name)
                     email = request.POST['email']
-                    return render_to_response('success.html',{'file':f,'md5':md5,'email':email})
+                    is_checked = False
+                    if not droidModel.objects.filter(md5=md5):
+                        model = droidModel(name=request.FILES['apk'],
+                                      md5=md5,email=email,is_checked=False)
+                        model.save()
+                    else:
+                        is_checked = True
+
+                    return render_to_response('success.html',{'file':f,'md5':md5,'email':email,'is_checked':is_checked})
                 else:
                     return render_to_response('upload_template.html',{'form':form,'errors':'must be apk file!'})
             else:

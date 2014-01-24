@@ -11,6 +11,9 @@
         filename: {{ file.name }}
         filesize: {{ file.size }} bytes
         file_md5: {{ md5 }}
+        {% if is_checked %}
+        <p>这个应用已经被人检测过了.</p>
+        {% endif %}
     </pre>
 </body>
 </html>
