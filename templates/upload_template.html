@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>upload apk file</title>
+    </head>
+    <body>
+        <form action="/upfile/" method="post" enctype="multipart/form-data">
+            <label>path:  </label>
+            {{ form.apk }}
+            <br />
+            <label>email:  </label>
+            {{ form.email }}
+            <br />
+            <input type="submit" value="upload" />
+        </form>
+        {% if form.errors %}
+            {{ form.errors }}
+        {% endif %}
+        {% if errors %}
+            {{ errors }}
+        {% endif %}
+
+    </body>
+</html>
