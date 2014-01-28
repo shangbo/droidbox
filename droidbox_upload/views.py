@@ -1,12 +1,16 @@
 #/usr/bin/env python
 #-*- coding:utf-8 -*-
-from django.shortcuts import render,HttpResponse,Http404,render_to_response
-from django.views.decorators.csrf import csrf_exempt
 import datetime
 import hashlib
-from upfile_form import UpFileForm
+
+from django.shortcuts import HttpResponse, render_to_response
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.datastructures import MultiValueDictKeyError
+
+from upfile_form import UpFileForm
 from models import droidModel
+from DroidBox23.scripts.send_email import mail_again
+
 # from django.http import HttpResponseRedirect
 # from django.template import Template,Context
 # from django.template.loader import get_template
@@ -29,10 +33,11 @@ def upload(request):
                     is_checked = False
                     if not droidModel.objects.filter(md5=md5):
                         model = droidModel(name=request.FILES['apk'],
-                                      md5=md5,email=email,is_checked=False)
+                                      md5=md5,email=email,is_checked=False,is_sent_email=False)
                         model.save()
                     else:
                         is_checked = True
+                        mail_again(md5,email)
 
                     return render_to_response('success.html',{'file':f,'md5':md5,'email':email,'is_checked':is_checked})
                 else:

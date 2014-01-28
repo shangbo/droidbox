@@ -7,6 +7,6 @@ class droidModel(models.Model):
     md5 = models.CharField(max_length=32)
     email = models.EmailField()
     is_checked = models.BooleanField()
-
+    is_sent_email = models.BooleanField()
     def __repr__(self):
         return self.name
