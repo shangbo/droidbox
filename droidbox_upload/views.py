@@ -33,11 +33,11 @@ def upload(request):
                     is_checked = False
                     if not droidModel.objects.filter(md5=md5):
                         model = droidModel(name=request.FILES['apk'],
-                                      md5=md5,email=email,is_checked=False,is_sent_email=False)
+                                      md5=md5, email=email,is_checked=False,is_sent_email=False)
                         model.save()
                     else:
                         is_checked = True
-                        mail_again(md5,email)
+                        mail_again(request.FILES['apk'].name, email)
 
                     return render_to_response('success.html',{'file':f,'md5':md5,'email':email,'is_checked':is_checked})
                 else:
